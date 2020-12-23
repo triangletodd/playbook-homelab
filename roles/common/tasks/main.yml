@@ -1,0 +1,9 @@
+---
+- name: "apt update"
+  apt:
+    update_cache: yes
+    
+- name: "install gpg2"
+  apt:
+    name: gnupg2
+    state: present

@@ -1,0 +1,7 @@
+proxmox_behavior: "no_defaults"
+ct_onboot: "yes"
+ct_unprivileged: "yes"
+ct_state: "present"
+
+ping_server: 1.1.1.1
+creation_timeout: 10

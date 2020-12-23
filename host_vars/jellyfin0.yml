@@ -1,0 +1,12 @@
+---
+ct_hostname: "jellyfin0"
+ct_id: "201"
+ct_ostemplate: "{{lxc_templates.ubuntu.2004 }}"
+ct_cores: "4"
+ct_memory: "4096"
+ct_storage: "storage0-proxmox"
+ct_netif: '{"net0":"name=eth0,ip=dhcp,ip6=dhcp,bridge=vmbr0"}'
+ct_disk: "40"
+ct_onboot: "yes"
+ct_pubkey: "{{ pubkey }}"
+ct_mounts: '{"mp0": "/storage0/jellyfin,mp=/data"}'

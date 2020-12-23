@@ -1,0 +1,10 @@
+---
+proxmox_api_host: "{{ vault_proxmox_api_host }}"
+proxmox_api_user:  "{{ vault_proxmox_api_user }}"
+proxmox_api_password: "{{ vault_proxmox_api_pass }}"
+proxmox_node: "bonnie"
+ct_nameserver: "192.168.88.1"
+ct_searchdomain: "h.mtn.cc"
+lxc_templates:
+  ubuntu:
+    2004: 'isos:vztmpl/ubuntu-20.04-standard_20.04-1_amd64.tar.gz'

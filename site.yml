@@ -1,0 +1,29 @@
+---
+- hosts: proxmox
+  tasks:
+    - include_role:
+        name: common
+
+- hosts: lxc
+  gather_facts: no
+  tasks:
+    - include_role:
+        name: proxmox-lxc
+
+- hosts: jellyfin
+  tasks:
+    - include_role:
+        name: common
+    - include_role:
+        name: jellyfin
+
+# - hosts: influxdb
+#   tasks:
+#     - include_role:
+#         name: influxdb
+
+# - hosts: postgres
+#   tasks:
+#     - include_role:
+#         name: postgres
+

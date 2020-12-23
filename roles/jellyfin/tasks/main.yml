@@ -1,0 +1,34 @@
+---
+# Dependencies
+- name: Install apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: Enable universe
+  apt_repository:
+    repo: "deb http://us.archive.ubuntu.com/ubuntu {{ ansible_distribution_release|lower }} universe"
+    state: present
+
+# Jellyfin
+- name: Install jellyfin
+  apt_key:
+    url: https://repo.jellyfin.org/ubuntu/jellyfin_team.gpg.key
+    state: present
+
+- name: Install jellyfin repo
+  apt_repository:
+    repo: deb https://repo.jellyfin.org/ubuntu focal main
+    state: present
+
+- name: Install jellyfin
+  apt:
+    name: jellyfin
+    update_cache: yes
+  
+- name:  Enable jellyfin
+  service:
+    name: jellyfin
+    enabled: true
+  notify: restart jellyfin
+

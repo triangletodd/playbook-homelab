@@ -1,0 +1,59 @@
+- name: "create {{ ct_hostname }}"
+  delegate_to: localhost
+  community.general.proxmox:
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    proxmox_default_behavior: "{{ proxmox_behavior }}"
+    description: "managed by ansible"
+    node: "{{ proxmox_node }}"
+    vmid: "{{ ct_id | default(omit) }}"
+    hostname: "{{ ct_hostname }}"
+    nameserver: "{{ ct_nameserver }}"
+    searchdomain: "{{ ct_searchdomain }}"
+    ostemplate: "{{ ct_ostemplate }}"
+    cores: "{{ ct_cores }}"
+    memory: "{{ ct_memory }}"
+    storage: "{{ ct_storage }}"
+    netif: "{{ ct_netif }}"
+    disk: "{{ ct_disk }}"
+    mounts: "{{ ct_mounts | default(omit) }}"
+    onboot: "{{ ct_onboot }}"
+    unprivileged: "{{ ct_unprivileged }}"
+    pubkey: "{{ ct_pubkey }}"
+    state: present
+  throttle: 1
+  register: _ct_create
+
+- name: "wait for {{ ct_hostname }} to finish creating"
+  delegate_to: localhost
+  wait_for:
+    timeout: "{{ creation_timeout }}"
+  when: _ct_create.changed
+
+- name: "start {{ ct_hostname }}"
+  delegate_to: localhost
+  community.general.proxmox:
+    vmid: "{{ ct_id | default(omit) }}"
+    hostname: "{{ ct_hostname }}"
+    api_host: "{{ proxmox_api_host }}"
+    api_user: "{{ proxmox_api_user }}"
+    api_password: "{{ proxmox_api_password }}"
+    proxmox_default_behavior: "{{ proxmox_behavior }}"
+    state: started
+  register: _ct_start
+
+- name: "wait for {{ ct_hostname }} to finish creating"
+  delegate_to: localhost
+  wait_for:
+    timeout: "{{ creation_timeout }}"
+  when: _ct_start.changed
+
+- name: "wait for {{ ct_hostname }} to start ssh"
+  delegate_to: localhost
+  wait_for:
+    port: 22
+    host: '{{ inventory_hostname }}'
+    search_regex: OpenSSH
+    delay: 10
+  when: _ct_start.changed

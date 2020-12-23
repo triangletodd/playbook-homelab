@@ -1,0 +1,8 @@
+- name: "ct create wait"
+  delegate_to: localhost
+  wait_for:
+    timeout: "{{ creation_timeout }}"
+- name: "ct start wait"
+  delegate_to: localhost
+  wait_for:
+    timeout: "{{ starting_timeout }}"
